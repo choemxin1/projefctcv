@@ -20,29 +20,29 @@ module.exports = {
       lastName: {
         type: Sequelize.STRING
       },
-      address: {
-        type: Sequelize.STRING
+      address :{
+          type :Sequelize.STRING
       },
-      gender: {
-        type: Sequelize.STRING
+      gender :{
+        type :Sequelize.STRING
       },
-      roleId: {
-        type: Sequelize.STRING
+      roleId :{
+      type :Sequelize.STRING
       },
-      phonenumber: {
-        type: Sequelize.STRING
+      image :{
+        type :Sequelize.STRING
       },
-      positionId: {
-        type: Sequelize.STRING
+      phonenumber :{
+          type :Sequelize.STRING
       },
-      image: {
-        type: Sequelize.BLOB('long'),
+      positionID :{
+            type :Sequelize.STRING
       },
 
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
+    },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE

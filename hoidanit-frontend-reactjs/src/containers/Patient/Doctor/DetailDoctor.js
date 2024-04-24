@@ -6,8 +6,8 @@ import { getDetailInforDoctor } from '../../../services/userService';
 import { LANGUAGES } from '../../../utils';
 import DoctorSchedule from './DoctorSchedule';
 import DoctorExtraInfor from './DoctorExtraInfor';
-import LikeAndShare from '../SocialPlugin/LikeAndShare';
-import Comment from '../SocialPlugin/Comment';
+//import LikeAndShare from '../SocialPlugin/LikeAndShare';
+//import Comment from '../SocialPlugin/Comment';
 
 class DetailDoctor extends Component {
 
@@ -76,9 +76,9 @@ class DetailDoctor extends Component {
                                     </span>
                                 }
                                 <div className="like-share-plugin">
-                                    <LikeAndShare
+                                    {/* <LikeAndShare
                                         dataHref={currentURL}
-                                    />
+                                    /> */}
                                 </div>
                             </div>
                         </div>
@@ -104,10 +104,10 @@ class DetailDoctor extends Component {
                         }
                     </div>
                     <div className="comment-doctor">
-                        <Comment
+                        {/* <Comment
                             dataHref={currentURL}
                             width={"100%"}
-                        />
+                        /> */}
                     </div>
                 </div>
 

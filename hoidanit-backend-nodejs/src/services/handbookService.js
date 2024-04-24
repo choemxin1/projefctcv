@@ -1,24 +1,24 @@
 const db = require("../models");
 
 
-let createClinic = (data) => {
+let createHandBook = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.name ||
                 !data.imageBase64 ||
                 !data.descriptionHTML ||
-                !data.descriptionMarkdown ||
-                !data.address
+                !data.descriptionMarkdown 
+                
             ) {
                 resolve({
                     errCode: 1,
-                    errMessage: 'Missing parameter from sever clinic'
+                    errMessage: 'Missing parameter from sever handbook'
                 })
             } else {
-                await db.Clinic.create({
+                await db.HandBook.create({
                     name: data.name,
                     image: data.imageBase64,
-                    address : data.address,
+                    
                     descriptionHTML: data.descriptionHTML,
                     descriptionMarkdown: data.descriptionMarkdown
                 })
@@ -34,10 +34,10 @@ let createClinic = (data) => {
         }
     })
 }
-let getAllClinic = () => {
+let getAllHandbook = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            let data = await db.Clinic.findAll({
+            let data = await db.HandBook.findAll({
 
             });
             if (data && data.length > 0) {
@@ -58,7 +58,7 @@ let getAllClinic = () => {
     })
 }
 
-let getDetailClinicById = (inputId) => {
+let getDetailHandBookById = (inputId) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!inputId) {
@@ -68,22 +68,14 @@ let getDetailClinicById = (inputId) => {
                 })
             }
             else {
-                let data = await db.Clinic.findOne({
+                let data = await db.HandBook.findOne({
                     where: {
                         id: inputId
                     },
-                    attributes: ['name', 'address', 'descriptionHTML', 'descriptionMarkdown'],
+                    
                 })
 
-                if (data) {
-                    let doctorClinic = [];
-                    doctorClinic = await db.Doctor_Infor.findAll({
-                        where: { clinicId: inputId },
-                        attributes: ['doctorId', 'provinceId'],
-                    })
-                    data.doctorClinic = doctorClinic;
-
-                } else data = {}
+                
 
                 resolve({
                     errMessage: 'ok',
@@ -99,7 +91,7 @@ let getDetailClinicById = (inputId) => {
     })
 }
 module.exports = {
-    createClinic: createClinic,
-    getAllClinic: getAllClinic,
-    getDetailClinicById: getDetailClinicById
+    createHandBook: createHandBook,
+     getAllHandbook: getAllHandbook,
+     getDetailHandBookById: getDetailHandBookById
 }

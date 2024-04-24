@@ -1,9 +1,10 @@
 import db from "../models/index";
-require('dotenv').config();
+
 import _ from 'lodash';
 import emailService from '../services/emailService';
 
-
+require('dotenv').config();
+const moment = require('moment');
 
 
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
@@ -80,15 +81,95 @@ let checkRequiredFields = (inputData) => {
     }
 }
 
-let saveDetailInforDoctor = (inputData) => {
-    return new Promise(async (resolve, reject) => {
-        resolve({
-            errCode: 0,
-            errMessage: 'ok'
-        })
-    })
-}
 
+let saveDetailInforDoctor = (inputData) => {
+    return new Promise(async (res, rej) => {
+      try {
+  
+        if (
+          !inputData.doctorId ||
+          !inputData.contentMarkdown ||
+          !inputData.contentHTML ||
+          !inputData.selectedPrice ||
+          !inputData.selectedPayment ||
+          !inputData.selectedProvince ||
+          !inputData.nameClinic ||
+          !inputData.addressClinic ||
+          !inputData.note ||
+          !inputData.specialtyId ||
+          !inputData.clinicId
+        ) {
+          res({
+            errCode: 1,
+            errMessage: "missing para doctor",
+          });
+        } else {
+          let user = await db.Markdown.findOne({
+            where: { doctorId: inputData?.doctorId },
+            raw: false,
+          });
+          if (user) {
+            user.contentHTML = inputData.contentHTML;
+            user.contentMarkdown = inputData.contentMarkdown;
+            user.des = inputData.des;
+            
+            await user.save();
+  
+          } else {
+            await db.Markdown.create({
+              contentHTML: inputData.contentHTML,
+              contentMarkdown: inputData.contentMarkdown,
+              des: inputData.des,
+              doctorId: inputData.doctorId,
+            });
+  
+          }
+          let doctorInfor = await db.Doctor_Infor.findOne({
+            where: { doctorId: inputData?.doctorId },
+            raw: false,
+          });
+  
+          if (doctorInfor) {
+            //update
+            doctorInfor.priceId = inputData.selectedPrice;
+            doctorInfor.provinceId = inputData.selectedProvince;
+            doctorInfor.paymentId = inputData.selectedPayment;
+            doctorInfor.nameClinic = inputData.nameClinic;
+            doctorInfor.addressClinic = inputData.addressClinic;
+            doctorInfor.note = inputData.note;
+            doctorInfor.specialtyId = inputData.specialtyId;
+            doctorInfor.clinicId = inputData.clinicId;
+            await doctorInfor.save();
+  
+          } else {
+            await db.Doctor_Infor.create({
+              doctorId: inputData?.doctorId,
+              priceId: inputData.selectedPrice,
+              provinceId: inputData.selectedProvince,
+              paymentId: inputData.selectedPayment,
+              nameClinic: inputData.nameClinic,
+              addressClinic: inputData.addressClinic,
+              note: inputData.note,
+              specialtyId: inputData.specialtyId,
+              clinicId: inputData.clinicId,
+            });
+  
+          }
+          res({
+            errCode: 0,
+            data: " infor doctor success",
+          });
+  
+  
+  
+  
+  
+        }
+      } catch (e) {
+        rej(e);
+      }
+    });
+  };
 let getDetailDoctorById = (inputId) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -109,7 +190,7 @@ let getDetailDoctorById = (inputId) => {
                     include: [
                         {
                             model: db.Markdown,
-                            attributes: ['description', 'contentHTML', 'contentMarkdown']
+                            attributes: ['des', 'contentHTML', 'contentMarkdown']
                         },
 
                         { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },
@@ -147,15 +228,55 @@ let getDetailDoctorById = (inputId) => {
     })
 }
 
-let bulkCreateSchedule = (data) => {
-    return new Promise(async (resolve, reject) => {
-        resolve({
-            errCode: 0,
-            errMessage: 'ok'
-        })
-    })
-}
 
+let bulkCreateSchedule = (inputData) => {
+    console.log('show dữ liệu vào bulkCreateSchedule',inputData)
+    return new Promise(async (res, rej) => {
+      try {
+        let ManageSchedule = await db.Schedule.findAll({
+          where: { doctorId: inputData.doctorId, date: inputData.formatedDate
+          },
+          // attributes: {
+          //     exclude: ['password','image']
+          // }
+        });
+        let resultCreateManageSchedule = inputData.arrSchedule.map((item) => ({
+          maxNumber: 10,
+          date: item.date,
+          timeType: item.timeType,
+          doctorId: item.doctorId,
+        }));
+        let checkAlreadyExist = (arr, item) => {
+          let check = false;
+          for (let i = 0; i < arr.length; i++) {
+            if (item.timeType === arr[i].timeType) {
+              check = true;
+              break;
+            }
+          }
+          return check;
+        };
+        // console.log("ManageSchedule", ManageSchedule[2], ManageSchedule.length);
+        //console.log("resultCreateManageSchedule", resultCreateManageSchedule);
+        let result = resultCreateManageSchedule.filter(
+          (item) => checkAlreadyExist(ManageSchedule, item) === false
+        );
+        //   let result = _.differenceBy(resultCreateManageSchedule, ManageSchedule, [
+        //     "timeType",
+        //     "date",
+        //   ]);
+  
+        console.log("result cuối cùng", result);
+        await db.Schedule.bulkCreate(result);
+        res({
+          errCode: 0,
+          data: "succ create  manage schedule",
+        });
+      } catch (e) {
+        rej(e);
+      }
+    });
+  };
 let getScheduleByDate = (doctorId, date) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -165,14 +286,18 @@ let getScheduleByDate = (doctorId, date) => {
                     errMessage: 'Missing required parameters'
                 })
             } else {
+                let dateObject = new Date();
+                let abc = moment(parseInt(date)).format('YYYY-MM-DD HH:mm:ss');
+                console.log('show getScheduleByDate,', doctorId , abc)
                 let dataSchedule = await db.Schedule.findAll({
                     where: {
                         doctorId: doctorId,
-                        date: date
+                        date: abc
+                        
                     },
 
                     include: [
-                        { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] },
+                        { model: db.Allcode, as: 'dateData', attributes: ['valueEn', 'valueVi'] },
 
                         { model: db.User, as: 'doctorData', attributes: ['firstName', 'lastName'] },
 
@@ -256,7 +381,7 @@ let getProfileDoctorById = (inputId) => {
                     include: [
                         {
                             model: db.Markdown,
-                            attributes: ['description', 'contentHTML', 'contentMarkdown']
+                            attributes: ['des', 'contentHTML', 'contentMarkdown']
                         },
 
                         { model: db.Allcode, as: 'positionData', attributes: ['valueEn', 'valueVi'] },

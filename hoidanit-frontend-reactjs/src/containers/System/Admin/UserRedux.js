@@ -155,8 +155,11 @@ class UserRedux extends Component {
 
     checkValidateInput = () => {
         let isValid = true;
+        let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!"#$%&'()*+,-./:;<=>?@\[\]^_{|}~])[a-zA-Z0-9!"#$%&'()*+,-./:;<=>?@\[\]^_{|}~]{6,}$/;
+        let emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z\-0-9]{2,}))$/;
+
         let arrCheck = ['email', 'password', 'firstName', 'lastName',
-            'phoneNumber', 'address']
+            'phoneNumber', 'address', 'gender', 'position', 'role']
         for (let i = 0; i < arrCheck.length; i++) {
             if (!this.state[arrCheck[i]]) {
                 isValid = false;
@@ -164,7 +167,18 @@ class UserRedux extends Component {
                 break;
             }
         }
+        // if (!regex.test(this.state.password)) {
+        //     isValid = false;
+        //     alert("Mật khẩu phải dài ít nhất 6 kí tự và bao gồm cả chữ hoa, chữ thường và số!")
+            
 
+        // }
+        // if (!emailRegex.test(this.state.email)) {
+        //     isValid = false;
+        //     alert("Sai định dạng email!")
+            
+
+        // }
         return isValid;
     }
 

@@ -48,12 +48,12 @@ class ManageSchedule extends Component {
 
 
 
-        // if (prevProps.language !== this.props.language) {
-        //     let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
-        //     this.setState({
-        //         listDoctors: dataSelect
-        //     })
-        // }
+        if (prevProps.language !== this.props.language) {
+            let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
+            this.setState({
+                listDoctors: dataSelect
+            })
+        }
     }
 
     buildDataInputSelect = (inputData) => {

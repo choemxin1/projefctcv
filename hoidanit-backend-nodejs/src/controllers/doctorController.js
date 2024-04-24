@@ -109,6 +109,7 @@ let getExraInforDoctorById = async (req, res) => {
 
 let getProfileDoctorById = async (req, res) => {
     try {
+        console.log('check id',req.query.doctorId)
         let infor = await doctorService.getProfileDoctorById(req.query.doctorId);
         return res.status(200).json(
             infor

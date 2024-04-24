@@ -127,7 +127,7 @@ let createNewUser = (data) => {
                     phonenumber: data.phonenumber,
                     gender: data.gender,
                     roleId: data.roleId,
-                    positionId: data.positionId,
+                    positionID: data.positionId,
                     image: data.avatar
                 })
 
@@ -182,7 +182,7 @@ let updateUserData = (data) => {
                 user.lastName = data.lastName;
                 user.address = data.address;
                 user.roleId = data.roleId;
-                user.positionId = data.positionId;
+                user.positionID = data.positionId;
                 user.gender = data.gender;
                 user.phonenumber = data.phonenumber;
                 if (data.avatar) {

@@ -131,7 +131,7 @@ class DoctorExtraInfor extends Component {
                                     </span>
                                 </div>
                                 <div className="note">
-                                    {extraInfor && extraInfor.note ? extraInfor.note : ''}
+                                    <FormattedMessage id="admin.manage-doctor.note"/>{' : '}{extraInfor && extraInfor.note ? extraInfor.note : ''}
                                 </div>
 
                             </div>

@@ -40,7 +40,7 @@ class ModalUser extends Component {
         this.props.toggleFromParent();
     }
 
-    handleOnChageInput = (event, id) => {
+    handleOnChangeInput = (event, id) => {
         //bad code.modify state
         /**
          * this.state = {
@@ -104,7 +104,7 @@ class ModalUser extends Component {
                             <label>Email</label>
                             <input
                                 type="text"
-                                onChange={(event) => { this.handleOnChageInput(event, "email") }}
+                                onChange={(event) => { this.handleOnChangeInput(event, "email") }}
                                 value={this.state.email}
                             />
                         </div>
@@ -112,7 +112,7 @@ class ModalUser extends Component {
                             <label>Password</label>
                             <input
                                 type="password"
-                                onChange={(event) => { this.handleOnChageInput(event, "password") }}
+                                onChange={(event) => { this.handleOnChangeInput(event, "password") }}
                                 value={this.state.password}
                             />
                         </div>
@@ -120,7 +120,7 @@ class ModalUser extends Component {
                             <label>First name</label>
                             <input
                                 type="text"
-                                onChange={(event) => { this.handleOnChageInput(event, "firstName") }}
+                                onChange={(event) => { this.handleOnChangeInput(event, "firstName") }}
                                 value={this.state.firstName}
                             />
                         </div>
@@ -128,7 +128,7 @@ class ModalUser extends Component {
                             <label>Last name</label>
                             <input
                                 type="text"
-                                onChange={(event) => { this.handleOnChageInput(event, "lastName") }}
+                                onChange={(event) => { this.handleOnChangeInput(event, "lastName") }}
                                 value={this.state.lastName}
                             />
                         </div>
@@ -136,10 +136,35 @@ class ModalUser extends Component {
                             <label>Address</label>
                             <input
                                 type="text"
-                                onChange={(event) => { this.handleOnChageInput(event, "address") }}
+                                onChange={(event) => { this.handleOnChangeInput(event, "address") }}
                                 value={this.state.address}
                             />
                         </div>
+                        <div className="input-container">
+                            <label>Phone  number</label>
+                            <input
+                                type="text"
+                                onChange={(event) => { this.handleOnChangeInput(event, "phoneNumber") }}
+                                value={this.state.phoneNumber}
+                            />
+                        </div>
+                        {/* <div class="input-container col-md-2">
+                            <label for="inputState">Sex</label>
+                            <select id="inputState" name="gender" class="form-control">
+                                <option selected>Choose...</option>
+                                <option value="1">Female</option>
+                                <option value="0">Male</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputState">Role</label>
+                            <select id="inputState" name="roleId" class="form-control">
+                                <option selected>Choose...</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Doctor</option>
+                                <option value="3">Patient</option>
+                            </select>
+                        </div> */}
                     </div>
                 </ModalBody>
                 <ModalFooter>
